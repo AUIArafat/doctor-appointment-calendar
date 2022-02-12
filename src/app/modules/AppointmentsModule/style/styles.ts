@@ -62,6 +62,35 @@ export const CalendarBodyCell = styled.div`
   text-align: center;
   border-right: 1px solid ${PRIMARY_COLOR};
   padding-top: 6px;
+  height: 15vh;
+`;
+
+export const CalendarBodyCellAppointment = styled.div`
+  height: 11vh;
+  overflow: auto;
+  ul {
+    list-style: none;
+    padding: 5px;
+    li {
+      margin-bottom: 2px;
+      border: 1px solid #111111;
+      cursor: pointer;
+      text-align: left;
+      color: #111111;
+      border-radius: 4px;
+      padding: 2px;
+      p {
+        margin-bottom: 0px;
+      }
+      span {
+        font-size: 9px;
+      }
+      &:hover {
+        background: ${PRIMARY_COLOR};
+        color: #ffffff;
+      }
+    }
+  }
 `;
 
 export const CalendarBodyRow = styled.div`
@@ -80,4 +109,10 @@ export const CalendarBodyCellDay = styled.span`
   color: #ffffff;
   padding: 5px 10px;`
       : ""}
+`;
+
+export const FormItem = styled.div`
+  .ant-col {
+    margin-bottom: 12px;
+  }
 `;
