@@ -7,6 +7,7 @@ function App() {
     <BrowserRouter>
       <Switch>
         <Route exact path="/" component={AppointmentsModule} />
+        <Route path="/year/:year/month/:month" component={AppointmentsModule} />
       </Switch>
     </BrowserRouter>
   );
