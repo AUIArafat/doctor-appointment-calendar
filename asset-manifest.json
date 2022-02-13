@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/doctor-appointment-calendar/static/css/main.1d57167d.css",
+    "main.js": "/doctor-appointment-calendar/static/js/main.9c51579d.js",
+    "index.html": "/doctor-appointment-calendar/index.html",
+    "main.1d57167d.css.map": "/doctor-appointment-calendar/static/css/main.1d57167d.css.map",
+    "main.9c51579d.js.map": "/doctor-appointment-calendar/static/js/main.9c51579d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1d57167d.css",
+    "static/js/main.9c51579d.js"
+  ]
+}
