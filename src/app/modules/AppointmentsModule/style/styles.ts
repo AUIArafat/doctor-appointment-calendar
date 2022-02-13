@@ -14,6 +14,9 @@ export const Container = styled(Layout)`
   }
   .ant-layout-content {
     margin: 36px;
+    @media (max-width: 768px) {
+      margin: 24px 0px;
+    }
   }
 `;
 
@@ -63,6 +66,7 @@ export const CalendarBodyCell = styled.div`
   border-right: 1px solid ${PRIMARY_COLOR};
   padding-top: 6px;
   height: 15vh;
+  width: 6vh;
 `;
 
 export const CalendarBodyCellAppointment = styled.div`

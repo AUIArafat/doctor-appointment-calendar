@@ -1,24 +1,23 @@
-import { Row, Col, Button } from "antd";
+import { Col, Button } from "antd";
 import _ from "lodash";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import Input from "../../../../components/Input";
-import { schema } from "../../schema";
-import { Appointment } from "../../types";
-import RadioButton from "../../../../components/RadioButton";
-import * as S from "../../style/styles";
-import Date from "../../../../components/Date";
-import Time from "../../../../components/Time";
+import Input from "../../../components/Input";
+import { Appointment } from "../types";
+import RadioButton from "../../../components/RadioButton";
+import * as S from "../style/styles";
+import Date from "../../../components/Date";
+import Time from "../../../components/Time";
 
-export default function Form() {
-  const { handleSubmit, control, formState } = useForm<Appointment>({
-    mode: "onSubmit",
-    resolver: yupResolver(schema),
-  });
+type Props = {
+  submitForm: (data: Appointment) => void;
+  handleCancel: () => void;
+  handleSubmit: any;
+  control: any;
+  formState: any;
+};
+export default function Form(props: Props) {
+  const { submitForm, handleCancel, handleSubmit, control, formState } = props;
   const { errors } = formState;
-  const submitForm = (data: Appointment) => {
-    console.log("da : ", data);
-  };
+
   return (
     <form onSubmit={handleSubmit(submitForm)}>
       <S.FormItem>
@@ -66,7 +65,7 @@ export default function Form() {
           />
         </Col>
         <Col span={24}>
-          <Button type="default" htmlType="button">
+          <Button type="default" htmlType="button" onClick={handleCancel}>
             Cancel
           </Button>
           <Button type="primary" htmlType="submit">

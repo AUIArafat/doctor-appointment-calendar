@@ -39,7 +39,7 @@ let appointments = [
     name: "Md Arafatul Islam",
     gender: "Male",
     age: "27",
-    date: "23/12/2021",
+    date: "25/12/2021",
     time: "13:00",
   },
   {
@@ -47,7 +47,7 @@ let appointments = [
     name: "Mark",
     gender: "Male",
     age: "28",
-    date: "23/12/2021",
+    date: "25/12/2021",
     time: "14:00",
   },
   {
@@ -55,7 +55,7 @@ let appointments = [
     name: "Bob",
     gender: "Female",
     age: "30",
-    date: "23/12/2021",
+    date: "24/12/2021",
     time: "15:00",
   },
   {
@@ -64,13 +64,19 @@ let appointments = [
     gender: "Female",
     age: "35",
     date: "23/12/2021",
-    time: "16:00",
+    time: "12:00",
   },
 ];
 
 export const createAppointment = (data: Appointment) => {
   return new Promise((resolve, reject) => {
+    let isExist = null;
     let allAppointments = storageData.getValue("appointments");
+    isExist = allAppointments.find(
+      (item: Appointment) => item.time === data.time
+    );
+    if (isExist)
+      setTimeout(() => reject(new Error("This slot is already booked")), 500);
     const id = uuidv4();
     const newAppointment: Appointment = {
       id: id,
@@ -78,10 +84,13 @@ export const createAppointment = (data: Appointment) => {
       date: data.date,
       gender: data.gender,
       name: data.name,
-      time: data.name,
+      time: data.time,
     };
 
     allAppointments = [...allAppointments, newAppointment];
+    allAppointments.sort((a: Appointment, b: Appointment) =>
+      a.time > b.time ? 1 : -1
+    );
     setTimeout(() => resolve(allAppointments), 500);
     setTimeout(() => reject(new Error("Something went wrong!!!")), 500);
   });
@@ -96,7 +105,10 @@ export const getAllAppointments = () => {
       storageData.setValue("appointments", appointments);
       setTimeout(() => resolve(appointments), 500);
     } else {
-      setTimeout(() => resolve(storageData.getValue("appointments")), 500);
+      const appointments = storageData
+        .getValue("appointments")
+        .sort((a: Appointment, b: Appointment) => (a.time > b.time ? 1 : -1));
+      setTimeout(() => resolve(appointments), 500);
     }
     setTimeout(() => reject(new Error("Something went wrong!!!")), 500);
   });

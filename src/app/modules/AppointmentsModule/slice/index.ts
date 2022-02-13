@@ -7,9 +7,11 @@ const currentYear = dayjs().year();
 const currentMonth = dayjs().month();
 export const initialState: AppointmentState = {
   appointments: null,
+  appointment: null,
   year: currentYear,
   month: currentMonth,
   loading: false,
+  error: null,
 };
 
 export const appointmentSlice = createSlice({
@@ -26,13 +28,25 @@ export const appointmentSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
+    },
     setAppointments: (state, action: PayloadAction<Appointment[]>) => {
       state.appointments = action.payload;
+    },
+    setAppointment: (state, action: PayloadAction<Appointment | null>) => {
+      state.appointment = action.payload;
     },
   },
 });
 
-export const { setYear, setMonth, setLoading, setAppointments } =
-  appointmentSlice.actions;
+export const {
+  setYear,
+  setMonth,
+  setLoading,
+  setAppointments,
+  setAppointment,
+  setError,
+} = appointmentSlice.actions;
 
 export default appointmentSlice.reducer;

@@ -1,5 +1,5 @@
 export type Appointment = {
-  id?: string;
+  id: string;
   name: string;
   gender: "Male" | "Female";
   age: number;

@@ -1,4 +1,4 @@
-import { Button, Col, Row, Select } from "antd";
+import { Button, Col, Select } from "antd";
 import * as S from "../style/styles";
 interface Props {
   month: number;

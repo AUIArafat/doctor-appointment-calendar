@@ -1,4 +1,4 @@
-import { Layout, Modal, Spin } from "antd";
+import { Layout, Modal, notification, Spin } from "antd";
 import SubHeader from "./components/SubHeader";
 import * as S from "./style/styles";
 import Calendar from "./components/Calendar";
@@ -8,21 +8,38 @@ import dayjs from "dayjs";
 import Form from "./components/Form";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAppointment } from "./slice/selectors";
-import { setAppointments, setLoading, setMonth, setYear } from "./slice";
-import { getAllAppointments } from "./slice/api";
+import {
+  setAppointment,
+  setAppointments,
+  setError,
+  setLoading,
+  setMonth,
+  setYear,
+} from "./slice";
+import {
+  createAppointment,
+  getAllAppointments,
+  getAppointmentById,
+} from "./slice/api";
 import { storageData } from "../../../utils/storageData";
 import { Appointment } from "./types";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schema } from "./schema";
+import { useForm } from "react-hook-form";
 
 const { Header, Content } = Layout;
 
 export default function AppointmentsModule() {
-  const { year, month, loading, appointments } = useSelector(selectAppointment);
+  const { year, month, loading, appointments, appointment, error } =
+    useSelector(selectAppointment);
   const dispatch = useDispatch();
   const params = useParams<{ year?: string; month?: string }>();
   const history = useHistory();
+  const { handleSubmit, control, formState, reset } = useForm<Appointment>({
+    mode: "onSubmit",
+    resolver: yupResolver(schema),
+  });
   const [visible, setVisible] = useState(false);
-
-  console.log("app : ", appointments);
 
   useEffect(() => {
     if (params?.year) {
@@ -41,11 +58,24 @@ export default function AppointmentsModule() {
         })
         .catch((error) => {
           dispatch(setLoading(false));
+          dispatch(setError(error.toString()));
         });
     }
     fetchAllAppointments();
   }, []);
 
+  useEffect(() => {
+    if (error) {
+      notification.error({
+        message: error,
+      });
+      dispatch(setError(null));
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (appointment) setVisible(true);
+  }, [appointment]);
   const handleMonth = (month: number) => {
     dispatch(setMonth(month));
     history.push(`/year/${year}/month/${month + 1}`);
@@ -64,6 +94,43 @@ export default function AppointmentsModule() {
 
   const handleCancel = () => {
     setVisible(false);
+    reset();
+    dispatch(setAppointment(null));
+  };
+  const submitForm = (data: Appointment) => {
+    data.date = dayjs(data.date).format("DD/MM/YYYY");
+    data.time = dayjs(data.time).format("HH:mm");
+    setVisible(false);
+    async function submitAppointments() {
+      dispatch(setLoading(true));
+      await createAppointment(data)
+        .then((res: any) => {
+          storageData.setValue("appointments", res);
+          dispatch(setAppointments(res));
+          dispatch(setLoading(false));
+        })
+        .catch((error) => {
+          dispatch(setLoading(false));
+          dispatch(setError(error.toString()));
+        });
+    }
+    submitAppointments();
+    reset();
+  };
+  const handleSelectedAppointment = (id: string) => {
+    async function fetchAppointmentsById() {
+      dispatch(setLoading(true));
+      await getAppointmentById(id)
+        .then((res: any) => {
+          dispatch(setAppointment(res));
+          dispatch(setLoading(false));
+        })
+        .catch((error) => {
+          dispatch(setLoading(false));
+          dispatch(setError(error.toString()));
+        });
+    }
+    fetchAppointmentsById();
   };
   return (
     <Spin spinning={loading}>
@@ -79,16 +146,37 @@ export default function AppointmentsModule() {
             handleYear={handleYear}
             handleCreateAppointment={handleCreateAppointment}
           />
-          <Calendar month={month} year={year} appointments={appointments} />
+          <Calendar
+            month={month}
+            year={year}
+            appointments={appointments}
+            handleSelectedAppointment={handleSelectedAppointment}
+          />
         </Content>
         <Modal
           visible={visible}
-          title="Title"
+          title={appointment ? "Appointment Details" : "Create New Appointment"}
           onOk={handleOk}
           onCancel={handleCancel}
           footer={null}
         >
-          <Form />
+          {appointment ? (
+            <>
+              <p>Name: {appointment.name}</p>
+              <p>Age: {appointment.age}</p>
+              <p>Gender: {appointment.gender}</p>
+              <p>Date: {appointment.date}</p>
+              <p>Time: {appointment.time}</p>
+            </>
+          ) : (
+            <Form
+              submitForm={submitForm}
+              handleCancel={handleCancel}
+              handleSubmit={handleSubmit}
+              control={control}
+              formState={formState}
+            />
+          )}
         </Modal>
       </S.Container>
     </Spin>

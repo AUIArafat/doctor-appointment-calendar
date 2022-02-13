@@ -1,4 +1,3 @@
-import { Col, Row } from "antd";
 import dayjs from "dayjs";
 import * as S from "../style/styles";
 import { Appointment } from "../types";
@@ -7,6 +6,7 @@ type Props = {
   month: number;
   year: number;
   appointments: Appointment[] | null;
+  handleSelectedAppointment: (id: string) => void;
 };
 function formatResponseData(appointments: Appointment[]) {
   const result: { [id: string]: Appointment[] } = {};
@@ -21,7 +21,7 @@ function formatResponseData(appointments: Appointment[]) {
 }
 
 export default function Calendar(props: Props) {
-  const { month, year, appointments } = props;
+  const { month, year, appointments, handleSelectedAppointment } = props;
   const weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const currentMonth = dayjs(dayjs().year(year).month(month));
   const monthStart = dayjs(currentMonth).startOf("M");
@@ -38,7 +38,6 @@ export default function Calendar(props: Props) {
   const formattedAppointment = appointments
     ? formatResponseData(appointments)
     : null;
-  console.log("sdf : ", formattedAppointment);
 
   while (day <= endDate) {
     for (let i = 0; i < 7; i++) {
@@ -48,7 +47,6 @@ export default function Calendar(props: Props) {
           dayjs(day).format("DD/MM/YYYY") === dayjs().format("DD/MM/YYYY")
             ? "Selected"
             : "";
-        console.log(selected);
 
         days.push(
           <S.CalendarBodyCell key={dayjs(day).format()}>
@@ -61,7 +59,10 @@ export default function Calendar(props: Props) {
                 <ul>
                   {formattedAppointment[dayjs(day).format("DD/MM/YYYY")].map(
                     (item: Appointment) => (
-                      <li key={item.id}>
+                      <li
+                        key={item.id}
+                        onClick={() => handleSelectedAppointment(item.id)}
+                      >
                         <p>{item.name}</p>
                         <span>{item.time}</span>
                       </li>
