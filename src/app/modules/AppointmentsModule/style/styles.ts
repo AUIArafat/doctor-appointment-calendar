@@ -65,7 +65,6 @@ export const CalendarBodyCell = styled.div`
   text-align: center;
   border-right: 1px solid ${PRIMARY_COLOR};
   padding-top: 6px;
-  height: 15vh;
   width: 6vh;
 `;
 
