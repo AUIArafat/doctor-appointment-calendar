@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/doctor-appointment-calendar/static/css/main.1d57167d.css",
-    "main.js": "/doctor-appointment-calendar/static/js/main.6a0f29a1.js",
+    "main.js": "/doctor-appointment-calendar/static/js/main.bb4057ee.js",
     "index.html": "/doctor-appointment-calendar/index.html",
     "main.1d57167d.css.map": "/doctor-appointment-calendar/static/css/main.1d57167d.css.map",
-    "main.6a0f29a1.js.map": "/doctor-appointment-calendar/static/js/main.6a0f29a1.js.map"
+    "main.bb4057ee.js.map": "/doctor-appointment-calendar/static/js/main.bb4057ee.js.map"
   },
   "entrypoints": [
     "static/css/main.1d57167d.css",
-    "static/js/main.6a0f29a1.js"
+    "static/js/main.bb4057ee.js"
   ]
 }
