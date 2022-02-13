@@ -1,4 +1,4 @@
-import { Input as AntInput, Tooltip } from "antd";
+import { Input as AntInput } from "antd";
 import { Controller } from "react-hook-form";
 import { InputProps } from "antd/es/input";
 import * as S from "./styles";

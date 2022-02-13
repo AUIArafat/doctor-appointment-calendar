@@ -1,9 +1,9 @@
 {
   "name": "doctor-appointment-calendar",
   "version": "0.1.0",
+  "homepage": "https://auiarafat.github.io/doctor-appointment-calendar",
   "private": true,
   "dependencies": {
-    "@craco/craco": "^6.4.3",
     "@hookform/resolvers": "^2.8.8",
     "@reduxjs/toolkit": "^1.7.2",
     "@testing-library/jest-dom": "^4.2.4",
@@ -20,6 +20,7 @@
     "@types/uuid": "^8.3.4",
     "antd": "^4.18.6",
     "dayjs": "^1.10.7",
+    "gh-pages": "^3.2.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.27.0",
@@ -31,6 +32,8 @@
     "yup": "^0.32.11"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
